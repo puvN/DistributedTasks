@@ -1,7 +1,7 @@
 package com.puvn.distributedtasks.task.manager;
 
 import com.puvn.distributedtasks.task.TaskStatus;
-import com.puvn.distributedtasks.task.dto.v1.Task;
+import com.puvn.distributedtasks.dto.v1.Task;
 
 public interface TaskManager {
 

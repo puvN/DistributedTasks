@@ -3,7 +3,7 @@ package com.puvn.distributedtasks.kafka;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.puvn.distributedtasks.execution.ExecutionService;
 import com.puvn.distributedtasks.task.TaskStatus;
-import com.puvn.distributedtasks.task.dto.v1.Task;
+import com.puvn.distributedtasks.dto.v1.Task;
 import com.puvn.distributedtasks.task.manager.TaskManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

@@ -1,4 +1,4 @@
-package com.puvn.distributedtasks.task.dto.v1;
+package com.puvn.distributedtasks.dto.v1;
 
 import com.puvn.distributedtasks.task.TaskStatus;
 

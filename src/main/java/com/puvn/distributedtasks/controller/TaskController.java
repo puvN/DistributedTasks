@@ -1,7 +1,9 @@
 package com.puvn.distributedtasks.controller;
 
+import com.puvn.distributedtasks.dto.v1.ExecutionStatus;
 import com.puvn.distributedtasks.exception.TaskNotFoundException;
-import com.puvn.distributedtasks.task.dto.v1.Task;
+import com.puvn.distributedtasks.dto.v1.Task;
+import com.puvn.distributedtasks.execution.ExecutionService;
 import com.puvn.distributedtasks.task.manager.TaskManager;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -19,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class TaskController {
 
     private final TaskManager taskManager;
+    private final ExecutionService executionService;
 
-    public TaskController(TaskManager taskManager) {
+    public TaskController(TaskManager taskManager, ExecutionService executionService) {
         this.taskManager = taskManager;
+        this.executionService = executionService;
     }
 
     @GetMapping("/{name}")
@@ -34,5 +38,11 @@ public class TaskController {
         }
         return ResponseEntity.ok(task);
     }
+
+    @GetMapping("/execution/status")
+    public ResponseEntity<ExecutionStatus> getExecutionStatus() {
+        return ResponseEntity.ok(this.executionService.getExecutionStatus());
+    }
+
 
 }
