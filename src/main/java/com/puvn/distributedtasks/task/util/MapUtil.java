@@ -16,13 +16,8 @@ public class MapUtil {
         return new com.puvn.distributedtasks.task.persist.Task(taskName, durationMs);
     }
 
-    public static com.puvn.distributedtasks.task.compute.Task
-    mapComputeTask(com.puvn.distributedtasks.task.persist.Task task) {
-        return new com.puvn.distributedtasks.task.compute.Task(task.getName(), task.getDuration());
-    }
-
     public static Worker mapToWorkerV1(com.puvn.distributedtasks.execution.Worker worker) {
-        return new Worker(worker.getName(), worker.getStatus().get());
+        return new Worker(worker.getName(), worker.getWorkerStatus());
     }
 
 }
