@@ -34,7 +34,7 @@ public class ExecutionServiceImpl implements ExecutionService {
         for (int i = 0; i < workerCount; i++) {
             var worker = new Worker("TaskWorker-" + i, this.taskQueue, taskManager);
             workers.add(worker);
-            log.info("Starting worker: {}", worker.getName());
+            log.info("Starting worker: {}", worker.getWorkerName());
             worker.start();
         }
         log.info("======= All Workers have been initialized");
