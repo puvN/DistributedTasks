@@ -42,6 +42,7 @@ public class ExecutionServiceImpl implements ExecutionService {
 
     @Override
     public void putTask(String taskName, long durationMs) {
+        log.info("======= Putting task into queue: {}", taskName);
         Task task = new Task(taskName, durationMs);
         task.setStatus(TaskStatus.QUEUED);
         this.taskQueue.add(task);

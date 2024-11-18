@@ -28,6 +28,7 @@ public class TaskManagerImpl implements TaskManager {
         if (this.taskRepository.findByName(taskName).isPresent()) {
             throw new TaskAlreadyExistsException("Task with name " + taskName + " already exists");
         }
+        log.info("Registering new task {}", taskName);
         var entity = mapEntity(taskName, durationMs);
         entity.setStatus(TaskStatus.REGISTERED);
         entity = this.taskRepository.save(entity);

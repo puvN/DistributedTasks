@@ -30,22 +30,23 @@ public class Worker extends Thread {
             workerStatus = WorkerStatus.AVAILABLE;
             try {
                 Task task = taskQueue.take();
+                log.info("======= Worker {} got task {}", workerName, task.getTaskName());
                 workerStatus = WorkerStatus.TASK_ASSIGNED;
                 updateTask(task, TaskStatus.EXECUTING);
                 try {
-                    log.info("Executing {} on Worker {}", task.getTaskName(), this.workerName);
+                    log.info("======= Executing {} on Worker {}", task.getTaskName(), this.workerName);
                     workerStatus = WorkerStatus.BUSY;
                     task.run();
                     updateTask(task, TaskStatus.COMPLETED);
-                    log.info("Completed {} on Worker {}", task.getTaskName(), this.workerName);
+                    log.info("======= Completed {} on Worker {}", task.getTaskName(), this.workerName);
                 } catch (Exception e) {
-                    log.error("Error with task {}, {}", task.getTaskName(), e.getMessage());
+                    log.error("======= Error with task {}, {}", task.getTaskName(), e.getMessage());
                     updateTask(task, TaskStatus.ERROR);
                 } finally {
                     workerStatus = WorkerStatus.AVAILABLE;
                 }
             } catch (InterruptedException e) {
-                log.error("Fatal error, could not take message from queue, interrupting {}", this.workerName, e);
+                log.error("======= Fatal error, could not take message from queue, interrupting {}", this.workerName, e);
                 Thread.currentThread().interrupt();
                 workerStatus = WorkerStatus.FIRING;
                 break;

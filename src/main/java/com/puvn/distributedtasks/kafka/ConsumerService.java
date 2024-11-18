@@ -35,6 +35,7 @@ public class ConsumerService {
     @KafkaListener(topics = "tasks-topic", groupId = "task-executor-group")
     public void consumeTask(ConsumerRecord<String, String> record) {
         try {
+            log.info("Received record: {}", record);
             Task task = parseTask(record.value());
             task = taskManager.registerTask(task.name(), task.durationMs());
             if (task != null && task.status() == TaskStatus.REGISTERED) {
