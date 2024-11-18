@@ -20,13 +20,13 @@ public class OpenApiConfig {
                     .example("task_2020-01-01");
 
             Parameter taskNameParameter = new Parameter()
-                    .name("taskName")
+                    .name("name")
                     .in("path")
                     .required(true)
                     .schema(stringSchema)
                     .description("Task name must match the pattern: " + validationUtil.getNamePattern());
 
-            openApi.getComponents().addParameters("taskName", taskNameParameter);
+            openApi.getComponents().addParameters("name", taskNameParameter);
         };
     }
 }

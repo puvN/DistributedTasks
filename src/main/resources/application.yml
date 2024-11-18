@@ -12,6 +12,7 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+    open-in-view: false
 
   flyway:
     enabled: true
@@ -31,7 +32,7 @@ workers:
   count: 5
 
 tasks:
-  name-pattern: ^[a-zA-Z0-9_-]+$
+  name-pattern: "^[a-zA-Z0-9_-]+$"
 
 springdoc:
   api-docs:

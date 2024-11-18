@@ -9,8 +9,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,8 +37,8 @@ public class TaskController {
     })
     @GetMapping("/{name}")
     public ResponseEntity<Task> getTask(
-            @PathVariable @Valid @NotBlank @Parameter(ref = "#/components/parameters/taskName")
-            String name) {
+            @Parameter(ref = "#/components/parameters/name")
+            @PathVariable String name) {
         var task = this.taskManager.getTask(name);
         if (task == null) {
             throw new TaskNotFoundException("Task with name '" + name + "' not found.");
