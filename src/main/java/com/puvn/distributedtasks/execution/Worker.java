@@ -13,7 +13,7 @@ public class Worker extends Thread {
     @Getter
     private final String workerName;
     @Getter
-    private final ThreadLocal<WorkerStatus> status = new ThreadLocal<>();
+    private WorkerStatus workerStatus;
     private final BlockingQueue<Task> taskQueue;
     private final TaskManager taskManager;
 
@@ -21,20 +21,20 @@ public class Worker extends Thread {
         this.workerName = name;
         this.taskQueue = taskQueue;
         this.taskManager = taskManager;
-        status.set(WorkerStatus.INITIALIZED);
+        workerStatus = WorkerStatus.INITIALIZED;
     }
 
     @Override
     public void run() {
         while (true) {
-            status.set(WorkerStatus.AVAILABLE);
+            workerStatus = WorkerStatus.AVAILABLE;
             try {
                 Task task = taskQueue.take();
-                status.set(WorkerStatus.TASK_ASSIGNED);
+                workerStatus = WorkerStatus.TASK_ASSIGNED;
                 updateTask(task, TaskStatus.EXECUTING);
                 try {
                     log.info("Executing {} on Worker {}", task.getTaskName(), this.workerName);
-                    status.set(WorkerStatus.BUSY);
+                    workerStatus = WorkerStatus.BUSY;
                     task.run();
                     updateTask(task, TaskStatus.COMPLETED);
                     log.info("Completed {} on Worker {}", task.getTaskName(), this.workerName);
@@ -42,12 +42,12 @@ public class Worker extends Thread {
                     log.error("Error with task {}, {}", task.getTaskName(), e.getMessage());
                     updateTask(task, TaskStatus.ERROR);
                 } finally {
-                    status.set(WorkerStatus.AVAILABLE);
+                    workerStatus = WorkerStatus.AVAILABLE;
                 }
             } catch (InterruptedException e) {
                 log.error("Fatal error, could not take message from queue, interrupting {}", this.workerName, e);
                 Thread.currentThread().interrupt();
-                status.set(WorkerStatus.FIRING);
+                workerStatus = WorkerStatus.FIRING;
                 break;
             }
         }
