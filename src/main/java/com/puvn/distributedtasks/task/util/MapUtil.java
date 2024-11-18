@@ -17,7 +17,7 @@ public class MapUtil {
     }
 
     public static Worker mapToWorkerV1(com.puvn.distributedtasks.execution.Worker worker) {
-        return new Worker(worker.getName(), worker.getWorkerStatus());
+        return new Worker(worker.getWorkerName(), worker.getWorkerStatus());
     }
 
 }
