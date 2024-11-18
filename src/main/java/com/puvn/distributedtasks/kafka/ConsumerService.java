@@ -5,6 +5,7 @@ import com.puvn.distributedtasks.execution.ExecutionService;
 import com.puvn.distributedtasks.task.TaskStatus;
 import com.puvn.distributedtasks.dto.v1.Task;
 import com.puvn.distributedtasks.task.manager.TaskManager;
+import com.puvn.distributedtasks.util.ValidationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,14 +23,17 @@ public class ConsumerService {
 
     private final ExecutionService executionService;
 
+    private final ValidationUtil validationUtil;
+
     @Value("${consumer.dead-letter-topic:dead_letter_topic}")
     private String deadLetterTopic;
 
     public ConsumerService(TaskManager taskManager, KafkaTemplate<String, String> kafkaTemplate,
-                           ExecutionService executionService) {
+                           ExecutionService executionService, ValidationUtil validationUtil) {
         this.taskManager = taskManager;
         this.kafkaTemplate = kafkaTemplate;
         this.executionService = executionService;
+        this.validationUtil = validationUtil;
     }
 
     @KafkaListener(topics = "tasks-topic", groupId = "task-executor-group")
@@ -59,9 +63,13 @@ public class ConsumerService {
     private Task parseTask(String taskJson) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            return objectMapper.readValue(taskJson, Task.class);
+            Task task = objectMapper.readValue(taskJson, Task.class);
+            if (!validationUtil.isValidTaskName(task.name())) {
+                throw new Exception();
+            }
+            return task;
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid task format", e);
+            throw new IllegalArgumentException("Invalid task name or task format", e);
         }
     }
 

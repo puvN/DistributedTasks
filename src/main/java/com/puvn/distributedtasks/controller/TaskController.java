@@ -4,13 +4,13 @@ import com.puvn.distributedtasks.dto.v1.Task;
 import com.puvn.distributedtasks.exception.TaskNotFoundException;
 import com.puvn.distributedtasks.task.manager.TaskManager;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +39,7 @@ public class TaskController {
     })
     @GetMapping("/{name}")
     public ResponseEntity<Task> getTask(
-            @PathVariable @Valid @NotBlank @Pattern(regexp = "^[a-zA-Z0-9_-]+$", message = "Invalid task name")
+            @PathVariable @Valid @NotBlank @Parameter(ref = "#/components/parameters/taskName")
             String name) {
         var task = this.taskManager.getTask(name);
         if (task == null) {

@@ -4,7 +4,7 @@ import com.puvn.distributedtasks.dto.v1.ExecutionStatus;
 import com.puvn.distributedtasks.task.TaskStatus;
 import com.puvn.distributedtasks.task.compute.Task;
 import com.puvn.distributedtasks.task.manager.TaskManager;
-import com.puvn.distributedtasks.task.util.MapUtil;
+import com.puvn.distributedtasks.util.MapUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

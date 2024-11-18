@@ -9,8 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.puvn.distributedtasks.task.util.MapUtil.mapEntity;
-import static com.puvn.distributedtasks.task.util.MapUtil.mapToDtoV1;
+import static com.puvn.distributedtasks.util.MapUtil.mapEntity;
+import static com.puvn.distributedtasks.util.MapUtil.mapToDtoV1;
 
 @Service
 @Slf4j

@@ -1,4 +1,4 @@
-package com.puvn.distributedtasks.task.util;
+package com.puvn.distributedtasks.util;
 
 import com.puvn.distributedtasks.dto.v1.Task;
 import com.puvn.distributedtasks.dto.v1.Worker;

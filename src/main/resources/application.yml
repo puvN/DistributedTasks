@@ -30,6 +30,8 @@ spring:
 workers:
   count: 5
 
+tasks:
+  name-pattern: ^[a-zA-Z0-9_-]+$
 
 springdoc:
   api-docs:
