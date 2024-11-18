@@ -1,10 +1,13 @@
 package com.puvn.distributedtasks.controller;
 
-import com.puvn.distributedtasks.dto.v1.ExecutionStatus;
-import com.puvn.distributedtasks.exception.TaskNotFoundException;
 import com.puvn.distributedtasks.dto.v1.Task;
-import com.puvn.distributedtasks.execution.ExecutionService;
+import com.puvn.distributedtasks.exception.TaskNotFoundException;
 import com.puvn.distributedtasks.task.manager.TaskManager;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -21,13 +24,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class TaskController {
 
     private final TaskManager taskManager;
-    private final ExecutionService executionService;
 
-    public TaskController(TaskManager taskManager, ExecutionService executionService) {
+    public TaskController(TaskManager taskManager) {
         this.taskManager = taskManager;
-        this.executionService = executionService;
     }
 
+    @Operation(summary = "Get a task by its name",
+            description = "Retrieve details of a specific task by providing its name.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Task retrieved successfully",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Task.class))),
+            @ApiResponse(responseCode = "404", description = "Task not found")
+    })
     @GetMapping("/{name}")
     public ResponseEntity<Task> getTask(
             @PathVariable @Valid @NotBlank @Pattern(regexp = "^[a-zA-Z0-9_-]+$", message = "Invalid task name")
@@ -38,11 +47,5 @@ public class TaskController {
         }
         return ResponseEntity.ok(task);
     }
-
-    @GetMapping("/execution/status")
-    public ResponseEntity<ExecutionStatus> getExecutionStatus() {
-        return ResponseEntity.ok(this.executionService.getExecutionStatus());
-    }
-
 
 }

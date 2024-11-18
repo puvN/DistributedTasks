@@ -29,3 +29,8 @@ spring:
 
 workers:
   count: 5
+
+
+springdoc:
+  api-docs:
+    path: /swagger-ui.html
