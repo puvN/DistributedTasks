@@ -38,5 +38,17 @@
   {"name":"task*2208","durationMs":16000},
   {"name":"task+8032","durationMs":4000},
   {"name":"task%4122","durationMs":8000},
-  {"name":"task_20201119_105924","durationMs":5000}
+  {"name":"task_20251119_105925","durationMs":15000},
+  {"name":"task_20251119_105926","durationMs":15000},
+  {"name":"task_20251119_105927","durationMs":15000},
+  {"name":"task_20251119_105928","durationMs":15000},
+  {"name":"task_20251119_105929","durationMs":15000},
+  {"name":"task_20251119_105930","durationMs":15000},
+  {"name":"task_20251119_105931","durationMs":25000},
+  {"name":"task_20251119_105932","durationMs":10000},
+  {"name":"task_20251119_105933","durationMs":9000},
+  {"name":"task_20251119_105934","durationMs":3000},
+  {"name":"task_20251119_105935","durationMs":4000},
+  {"name":"task_20251119_105936","durationMs":8000},
+  {"name":"task_20251119_105937","durationMs":9000}
 ]
