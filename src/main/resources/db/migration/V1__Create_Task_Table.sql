@@ -15,3 +15,6 @@ CREATE TABLE task
     created  TIMESTAMP,
     updated  TIMESTAMP
 );
+
+-- Add an index to the name column
+CREATE INDEX idx_task_name ON task(name);
