@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   postgres:
     image: postgres:15
@@ -21,6 +19,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
+  # one kafka node for local deployment, don't want to handle full cluster here
   kafka:
     image: confluentinc/cp-kafka:7.5.0
     container_name: kafka
@@ -33,17 +32,17 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT_INTERNAL
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_NUM_PARTITIONS: 3 # 3 application instances
     ports:
       - "9092:9092"
     # only for integration testing
     volumes:
       - ./kafka-scripts:/data
 
-  tasks_service:
+  tasks_service_replica1:
     build:
       context: ..
       dockerfile: Dockerfile
-    container_name: tasks_service
     depends_on:
       - postgres
       - kafka
@@ -55,7 +54,47 @@ services:
       FLYWAY_DATASOURCE_PASSWORD: ${FLYWAY_DATASOURCE_PASSWORD}
       KAFKA_BROKER: kafka:9093
     ports:
-      - "8080:8080"
+      - "8081:8080"
+    deploy:
+      replicas: 1
+
+  tasks_service_replica2:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - kafka
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      FLYWAY_DATASOURCE_USERNAME: ${FLYWAY_DATASOURCE_USERNAME}
+      FLYWAY_DATASOURCE_PASSWORD: ${FLYWAY_DATASOURCE_PASSWORD}
+      KAFKA_BROKER: kafka:9093
+    ports:
+      - "8082:8080"
+    deploy:
+      replicas: 1
+
+  tasks_service_replica3:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+      - kafka
+    environment:
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      FLYWAY_DATASOURCE_USERNAME: ${FLYWAY_DATASOURCE_USERNAME}
+      FLYWAY_DATASOURCE_PASSWORD: ${FLYWAY_DATASOURCE_PASSWORD}
+      KAFKA_BROKER: kafka:9093
+    ports:
+      - "8083:8080"
+    deploy:
+      replicas: 1
 
 volumes:
   postgres_data:
