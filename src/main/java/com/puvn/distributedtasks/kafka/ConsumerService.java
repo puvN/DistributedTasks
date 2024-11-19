@@ -3,7 +3,6 @@ package com.puvn.distributedtasks.kafka;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.puvn.distributedtasks.execution.ExecutionService;
 import com.puvn.distributedtasks.task.TaskStatus;
-import com.puvn.distributedtasks.dto.v1.Task;
 import com.puvn.distributedtasks.task.manager.TaskManager;
 import com.puvn.distributedtasks.util.ValidationUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -40,10 +39,10 @@ public class ConsumerService {
     public void consumeTask(ConsumerRecord<String, String> record) {
         try {
             log.info("Received record: {}", record);
-            Task task = parseTask(record.value());
-            task = taskManager.registerTask(task.name(), task.durationMs());
-            if (task != null && task.status() == TaskStatus.REGISTERED) {
-                this.executionService.putTask(task.name(), task.durationMs());
+            var kafkaTask = parseTask(record.value());
+            var managerTask = taskManager.registerTask(kafkaTask.name(), kafkaTask.durationMs());
+            if (managerTask != null && managerTask.status() == TaskStatus.REGISTERED) {
+                this.executionService.putTask(managerTask.name(), managerTask.durationMs());
             }
         } catch (IllegalArgumentException parseException) {
             log.error("Error parsing task: {}", parseException.getMessage());
