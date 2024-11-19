@@ -7,8 +7,9 @@ public class MapUtil {
 
     public static Task
     mapToDtoV1(com.puvn.distributedtasks.task.persist.Task entity) {
-        if (entity == null) return new Task("", 0, null);
-        return new Task(entity.getName(), entity.getDuration(), entity.getStatus());
+        if (entity == null) return new Task("", 0, null, null, null);
+        return new Task(entity.getName(), entity.getDuration(), entity.getStatus(),
+                entity.getCreated(), entity.getUpdated());
     }
 
     public static com.puvn.distributedtasks.task.persist.Task
