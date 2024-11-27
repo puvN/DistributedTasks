@@ -14,6 +14,7 @@ import static com.puvn.distributedtasks.util.MapUtil.mapToDtoV1;
 
 @Service
 @Slf4j
+@Transactional(readOnly = true)
 public class TaskManagerImpl implements TaskManager {
 
     private final TaskRepository taskRepository;
@@ -43,14 +44,12 @@ public class TaskManagerImpl implements TaskManager {
             var entity = optionalEntity.get();
             entity.setStatus(status);
             this.taskRepository.save(entity);
-            mapToDtoV1(entity);
         } else {
             throw new TaskNotFoundException("Task with name " + taskName + " does not exist");
         }
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Task getTask(String taskName) {
         var optionalEntity = this.taskRepository.findByName(taskName);
         if (optionalEntity.isPresent()) {
